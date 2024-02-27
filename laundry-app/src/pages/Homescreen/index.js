@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import io from 'socket.io-client';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {BASE_URL} from "../../store/actions/actionType";
 
 const Homescreen = ({navigation}) => {
   const [selectedStatus, setSelectedStatus] = useState('');
@@ -30,7 +31,7 @@ const Homescreen = ({navigation}) => {
 
 
   useEffect(() => {
-    const socket = io('https://82g27vh3-3000.asse.devtunnels.ms');
+    const socket = io(BASE_URL);
     socket.on('log', (log) => {
       console.log(log,"ini di home");
       if (log != "connected") {
@@ -76,7 +77,6 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
 
 
   const handleChangeStatus = (newStatus) => {
-    console.log(startDate,"tanpa of",startOfDate,"ini ada of");
     const formattedStartDate = checkDate ? format(startDate, 'yyyy-MM-dd') : '';
     const formattedEndDate = checkDate ? format(endDate, 'yyyy-MM-dd') : '';
     setSelectedStatus(newStatus);

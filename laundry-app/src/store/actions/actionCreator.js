@@ -70,15 +70,9 @@ export const fetchRequests = (filter = "", search = "", startDate = "", endDate 
         url += `&startDate=${startDate}&endDate=${endDate}`;
       }
 
-      console.log(url);
-
       
       // Mengirim permintaan GET ke API dengan URL yang dibangun
-      const response = await fetch(url, {
-        headers: {
-          access_token: 'localStorage.getItem("access_token")',
-        },
-      });
+      const response = await fetch(url);
       
       
       // Jika respons tidak ok, lempar error
@@ -104,11 +98,7 @@ export const fetchRequestById = (id) => {
     try {
 
       // api
-      const response = await fetch(BASE_URL + "/api/requests/" + id, {
-        headers: {
-          access_token : "localStorage.getItem('access_token')" // Menggunakan token akses yang telah Anda miliki
-        }
-      });
+      const response = await fetch(BASE_URL + "/api/requests/" + id);
       
       // contional if error
       if (!response.ok) throw new Error("upss something wrong");
@@ -136,9 +126,7 @@ export const addRequestHandler = (form) => {
       const response = await fetch(BASE_URL + "/api/requests", {
         method: "post",
         headers: {
-          "Content-Type": "application/json",
-          access_token : "localStorage.getItem('access_token')"
-        },
+          "Content-Type": "application/json"        },
         body: JSON.stringify(form),
       });
 
@@ -162,15 +150,9 @@ export const addRequestHandler = (form) => {
 export const deleteRequestHandler = (id) => {
   return async (dispatch) => {
     try {
-
-      
-
       // api
       const response = await fetch(BASE_URL + "/api/requests/" + id, {
         method: "delete",
-        headers: {
-          access_token : "localStorage.getItem('access_token')"
-        },
       });
 
       // change data response to json
@@ -198,9 +180,7 @@ export const updateRequestHandler = (form,id) => {
       const response = await fetch(BASE_URL + "/api/requests/" + id, {
         method: "put",
         headers: {
-          "Content-Type": "application/json",
-          access_token : "localStorage.getItem('access_token')"
-        },
+          "Content-Type": "application/json"        },
         body: JSON.stringify(form),
       });
 
@@ -225,18 +205,15 @@ export const updateRequestHandler = (form,id) => {
 export const updateStatusRequestHandler = (form,id) => {
   return async (dispatch) => {
     try {
-      console.log("masuik");
       // api
       const response = await fetch(BASE_URL + "/api/requests-status/" + id, {
         method: "put",
         headers: {
-          "Content-Type": "application/json",
-          access_token : "localStorage"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(form),
       });
 
-          console.log(response,"ini data");
       // change data response to json
       const data = await response.json();
 
@@ -262,73 +239,17 @@ export const updateStatusRequestHandler = (form,id) => {
 };
 
 
-
-// this fucntion api login from server
-export const loginHandler = (form) => {
-  return async (dispatch) => {
-    try {
-
-      // api
-      const response = await fetch(BASE_URL + "/api/login", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-
-      // change data response to json
-      const data = await response.json();
-
-      // contional if error
-      if (!response.ok) throw new Error(data.message);
-
-
-      // set localstore
-
-      localStorage.setItem("access_token", data.data.access_token);
-      localStorage.setItem("role", data.data.role);
-
-      // sweet alert
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "login successfully",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    } catch (error) {
-      // sweet alert error
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error,
-      });
-
-      // dispatch error
-      dispatch(error);
-    }
-  };
-};
-
-
 export const fetchTracks = (id) => {
   return async (dispatch) => {
     try {
       // api
-      const response = await fetch(BASE_URL + "/api/tracks/" + id, {
-        headers: {
-          access_token : "localStorage.getItem('access_token') "// Menggunakan token akses yang telah Anda miliki
-        }
-      });
+      const response = await fetch(BASE_URL + "/api/tracks/" + id);
 
       // contional if error
       if (!response.ok) throw new Error("upss something wrong");
       
       // change data to json
       let data = await response.json();
-
-      console.log(data, "di action");
 
       // call other fuction
       dispatch(tracksFetchSuccess(data.data));
@@ -344,11 +265,7 @@ export const fetchUsers = (search = "") => {
   return async (dispatch) => {
     try {
       // api
-      const response = await fetch(BASE_URL + `/api/users?search=${search}`, {
-        headers: {
-          access_token : "localStorage.getItem('access_token')" // Menggunakan token akses yang telah Anda miliki
-        }
-      });
+      const response = await fetch(BASE_URL + `/api/users?search=${search}`);
 
       // contional if error
       if (!response.ok) throw new Error("upss something wrong");
@@ -369,13 +286,11 @@ export const addUserHandler = (form) => {
   return async (dispatch) => {
     try {
 
-      console.log(form);
       // api
       const response = await fetch(BASE_URL + "/api/users", {
         method: "post",
         headers: {
-          "Content-Type": "application/json",
-          access_token : "localStorage.getItem('access_token')"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(form),
       });
@@ -407,10 +322,7 @@ export const deleteUserHandler = (id) => {
 
       // api
       const response = await fetch(BASE_URL + "/api/users/" + id, {
-        method: "delete",
-        headers: {
-          access_token : "localStorage.getItem('access_token')"
-        },
+        method: "delete"
       });
 
       // change data response to json
@@ -437,11 +349,7 @@ export const fetchUserById = (id) => {
     try {
 
       // api
-      const response = await fetch(BASE_URL + "/api/users/" + id, {
-        headers: {
-          access_token : "localStorage.getItem('access_token') "// Menggunakan token akses yang telah Anda miliki
-        }
-      });
+      const response = await fetch(BASE_URL + "/api/users/" + id);
       
       // contional if error
       if (!response.ok) throw new Error("upss something wrong");
@@ -471,8 +379,7 @@ export const updateUserHandler = (form,id) => {
       const response = await fetch(BASE_URL + "/api/users/" + id, {
         method: "put",
         headers: {
-          "Content-Type": "application/json",
-          access_token : "localStorage.getItem('access_token')"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(form),
       });
@@ -512,11 +419,7 @@ export const fetchRequestsOwner = (startDate = "", endDate = "") => {
       }
 
       // Mengirim permintaan GET ke API dengan URL yang dibangun
-      const response = await fetch(url, {
-        headers: {
-          access_token: "localStorage.getItem('access_token')",
-        },
-      });
+      const response = await fetch(url);
 
       
       // Jika respons tidak ok, lempar error

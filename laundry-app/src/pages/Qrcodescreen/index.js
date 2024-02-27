@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { View, Text, Image, ScrollView,Alert } from 'react-native';
 import tw from 'twrnc';
+import {BASE_URL} from "../../store/actions/actionType";
 
 const Qrcodescreen = ({navigation}) => {
   const [qrCodeSrc, setQrCodeSrc] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const socket = io('https://82g27vh3-3000.asse.devtunnels.ms');
+    const socket = io(BASE_URL);
 
     socket.on('qr', (src) => {
       setQrCodeSrc(src);

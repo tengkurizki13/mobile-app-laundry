@@ -6,4 +6,3 @@ export const USERS_FETCH_SUCCESS = "users/fetchAllUsers";
 export const REQUESTS_BY_ID_FETCH_SUCCESS = "requests/fetchRequestById";
 export const USERS_BY_ID_FETCH_SUCCESS = "users/fetchUserById";
 export const TRACKS_FETCH_SUCCESS = "tracks/fetchAllTracks";
-export const LOGIN_SUCCESS = "token/loginSuccess";
