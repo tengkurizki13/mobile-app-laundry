@@ -1,6 +1,6 @@
 import tw from 'twrnc';
 import React, { useState,useEffect } from 'react';
-import { ScrollView, Text, View, TouchableOpacity, TextInput, Modal,Alert,Pressable } from 'react-native';
+import { ScrollView, Text, View, TouchableOpacity, TextInput, Modal,Alert,Pressable,Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { AntDesign, Fontisto, FontAwesome5, MaterialCommunityIcons,FontAwesome6 } from '@expo/vector-icons';
 import { fetchRequests,deleteRequestHandler,updateStatusRequestHandler} from '../../store/actions/actionCreator';
@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 import io from 'socket.io-client';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {BASE_URL} from "../../store/actions/actionType";
+import {loader} from '../../assets/images';
 
 const Homescreen = ({navigation}) => {
   const [selectedStatus, setSelectedStatus] = useState('');
@@ -232,7 +233,8 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
   // contional if data not relode yet
   if (loading) {
     return (
-      <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
+      <View style={tw`flex-1 bg-white justify-center items-center`}>
+          <Image source={loader} style={tw`w-10 h-10`} />
           <Text style={tw`font-semibold text-white`}>Memuat ____ ...............</Text>
       </View>
     )
@@ -241,10 +243,10 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
   
 
   return (
-    <ScrollView contentContainerStyle={tw`flex-grow pt-20 items-center bg-lime-400`}>
+    <ScrollView contentContainerStyle={tw`flex-grow pt-10 items-center bg-teal-200`}>
       <View style={tw`w-11/12`}>
         {/* Form Pencarian */}
-        <View style={tw`mb-5 flex-row items-center justify-between`}>
+        <View style={tw`mb-5 flex-row items-center justify-between shadow-2xl`}>
           <TextInput
             style={tw`flex-1 bg-white border-2 border-gray-300 rounded-full px-4 py-3 shadow-md`}
             placeholder="search by order id"
@@ -257,7 +259,7 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
         </View>
         {/* Tombol-tombol aksi */}
         <View>
-          <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`}>
+          <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5 shadow-2xl`}>
             {/* Tombol-tombol aksi */}
             <View style={tw`flex-row justify-between`}>
               <TouchableOpacity style={tw`bg-gray-500 rounded p-2 flex-row items-center`} onPress={() => setShowFilterStatusModal(true)}>
@@ -278,14 +280,17 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
           {/* Tambahkan card pesanan lainnya di sini */}
         </View>
         {/* Daftar Pesanan */}
+
+    <View style={{backgroundColor:"#fff",paddingVertical:40,paddingHorizontal:30,borderRadius:40}}>
+
         {requests.length === 0 ?  
-     <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
-          <Text style={tw`font-semibold text-white`}>data kosong</Text>
+     <View style={tw`flex-1 bg-white justify-center items-center`}>
+          <Text style={tw`font-semibold`}>data kosong</Text>
       </View> 
     : 
         <View >
         {requests.map((request, index) => (
-          <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`} key={index}>
+          <View style={tw`bg-white rounded-lg p-5 shadow-2xl mb-5`} key={index}>
             <View style={tw `flex-row items-center justify-between mb-5`}>
             <Text style={tw`mb-2 text-gray-700 italic`}>
               <Text style={tw`font-semibold`}></Text>{format(new Date(request.createdAt), 'dd MMM yyyy')}
@@ -294,7 +299,7 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
             {request.User.username}
           </Text>
             </View>
-            <View style={tw`bg-white rounded-lg p-5 shadow-md mb-3`}>
+            <View style={tw`bg-white rounded-lg p-5 shadow-xl mb-3`}>
             <Text style={tw`mb-2 text-gray-700`}>
               <Text style={tw`font-semibold`}>OrderId =</Text> {request.id}
             </Text>
@@ -366,6 +371,7 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
           {/* Tambahkan card pesanan lainnya di sini */}
         </View>
 }
+    </View>
       </View>
 
       {/* Modal Filter by Status */}

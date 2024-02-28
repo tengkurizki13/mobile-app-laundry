@@ -22,5 +22,4 @@ export {
     FormAddUserscreen,
     FormUpdateUserscreen,
     Qrcodescreen,
-    Loginscreen
-}
+    Loginscreen}

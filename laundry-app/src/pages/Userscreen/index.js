@@ -5,6 +5,8 @@ import { AntDesign,MaterialCommunityIcons,FontAwesome5,FontAwesome6 } from '@exp
 import { fetchUsers,deleteUserHandler,fetchRequests} from '../../store/actions/actionCreator';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
+import {loader} from '../../assets/images';
+
 
 const Userscreen = ({navigation}) => {
   const[loading,setLoading] = useState(true)
@@ -88,8 +90,9 @@ const Userscreen = ({navigation}) => {
   // contional if data not relode yet
   if (loading) {
     return (
-      <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
-          <Text style={tw`font-semibold text-white`}>Memuat ____ ...............</Text>
+      <View style={tw`flex-1 bg-white justify-center items-center`}>
+      <Image source={loader} style={tw`w-10 h-10`} />
+      <Text style={tw`font-semibold text-white`}>Memuat ____ ...............</Text>
       </View>
     )
   }
@@ -97,7 +100,7 @@ const Userscreen = ({navigation}) => {
   
 
   return (
-    <ScrollView contentContainerStyle={tw`flex-grow pt-20 items-center bg-lime-400`}>
+    <ScrollView contentContainerStyle={tw`flex-grow pt-20 items-center bg-teal-200`}>
       <View style={tw`w-11/12`}>
         {/* Form Pencarian */}
         <View style={tw`mb-5 flex-row items-center justify-between`}>
@@ -113,7 +116,7 @@ const Userscreen = ({navigation}) => {
         </View>
         {/* Tombol-tombol aksi */}
         <View>
-          <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`}>
+          <View style={tw`bg-white rounded-lg p-5 shadow-2xl mb-5`}>
             {/* Tombol-tombol aksi */}
             <View style={tw`flex-row justify-between`}>
               <TouchableOpacity style={tw`bg-blue-500 rounded p-2 flex-row items-center`} onPress={() => clearFilter()}>
@@ -128,19 +131,21 @@ const Userscreen = ({navigation}) => {
           {/* Tambahkan card pesanan lainnya di sini */}
         </View>
         {/* Daftar Pesanan */}
+        <View style={{backgroundColor:"#fff",paddingVertical:40,paddingHorizontal:30,borderRadius:40}}>
         {users.length === 0 ?  
-     <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
-     <Text style={tw`font-semibold text-white`}>data kosong</Text>
+     <View style={tw`flex-1 bg-white justify-center items-center`}>
+     <Text style={tw`font-semibold`}>data kosong</Text>
  </View> 
     : 
+    
         <View>
         {users.map((user, index) => (
-          <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`} key={index}>
+          <View style={tw`bg-white rounded-lg p-5 shadow-2xl mb-5`} key={index}>
              <Text style={tw`mb-2 text-gray-700`}>terdaftar pada
               <Text style={tw`font-semibold italic`}> {format(new Date(user.createdAt), 'dd MMM yyyy')}</Text>
             </Text>
 
-            <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`}>
+            <View style={tw`bg-white rounded-lg p-5 shadow-xl mb-5`}>
             <Text style={tw`mb-2 text-gray-700`}>
               <Text style={tw`font-semibold`}>Nama = </Text> {user.username}
             </Text>
@@ -162,6 +167,7 @@ const Userscreen = ({navigation}) => {
           {/* Tambahkan card pesanan lainnya di sini */}
         </View>
 }
+</View>
       </View>
     </ScrollView>
   );

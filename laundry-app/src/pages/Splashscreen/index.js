@@ -8,17 +8,16 @@ const Splashscreen = ({ navigation }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      // navigation.navigate("MainApp")
       navigation.navigate("Loginscreen")
-    }, 2000);
+    }, 3000);
   }, []);
 
   return (
-    <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
+    <View style={tw`flex-1 bg-teal-200 justify-center items-center`}>
       <LottieView
         autoPlay
         ref={animation}
-        style={tw`w-20 h-20`}
+        style={tw`w-50 h-50`}
         source={require('../../assets/images/laundry.json')}
       />
     </View>

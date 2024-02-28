@@ -6,6 +6,7 @@ import { fetchRequestsOwner} from '../../store/actions/actionCreator';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {loader} from '../../assets/images';
 
 const Statisticscreen = ({navigation}) => {
   const[loading,setLoading] = useState(true)
@@ -105,8 +106,9 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
   // contional if data not relode yet
   if (loading) {
     return (
-      <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
-          <Text style={tw`font-semibold text-white`}>Memuat ____ ...............</Text>
+      <View style={tw`flex-1 bg-white justify-center items-center`}>
+      <Image source={loader} style={tw`w-10 h-10`} />
+      <Text style={tw`font-semibold text-white`}>Memuat ____ ...............</Text>
       </View>
     )
   }
@@ -114,10 +116,10 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
   
 
   return (
-    <ScrollView contentContainerStyle={tw`flex-grow pt-20 items-center bg-lime-400`}>
+    <ScrollView contentContainerStyle={tw`flex-grow pt-20 items-center bg-teal-200`}>
       <View style={tw`w-11/12`}>
         <View>
-          <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`}>
+          <View style={tw`bg-white rounded-lg p-5 shadow-2xl mb-5`}>
             {/* Tombol-tombol aksi */}
             <View style={tw`flex-row justify-between`}>
               <TouchableOpacity style={tw`bg-gray-500 rounded p-2 flex-row items-center`} onPress={() => setShowFilterDateModal(true)}>
@@ -132,6 +134,8 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
           {/* Tambahkan card pesanan lainnya di sini */}
         </View>
         {/* Daftar Pesanan */}
+
+        <View style={{backgroundColor:"#fff",paddingVertical:40,paddingHorizontal:30,borderRadius:40}}>
         {requestsOwner.length === 0 ?  
     <View>
       <Text>Data kosong</Text>
@@ -139,8 +143,8 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
     : 
         <View>
         {requestsOwner.map((request, index) => (
-          <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`} key={index}>
-            <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`} key={index}>
+          <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5 shadow-2xl`} key={index}>
+            <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5 shadow-2xl`} key={index}>
             <Text style={tw`mb-2 text-gray-700`}>
               <Text style={tw`font-semibold`}>Jumlah laundry = </Text> {request.jumlahOrder} laundry
             </Text>
@@ -161,7 +165,8 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
           ))}
           {/* Tambahkan card pesanan lainnya di sini */}
         </View>
-}
+} 
+</View>
       </View>
 
       {/* Modal Filter by Date */}

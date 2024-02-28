@@ -68,7 +68,7 @@ const AddFormRequest = ({navigation}) => {
     }
 
   return (
-    <View style={tw`flex-1 justify-center items-center`}>
+    <View style={tw`flex-1 justify-center items-center `}>
       <Text style={tw`text-lg mb-4 font-semibold italic pb-5`}>Form Menambah card laundry</Text>
       <View style={tw`w-3/4`}>
         <TextInput

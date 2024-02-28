@@ -126,6 +126,8 @@ Tim laundry citra jaya` }, { quoted: messages[0] });
 
 const setSocketIOInstance = (io) => {
     soket = io; 
+    io.removeAllListeners(); // Membersihkan _event listeners_ pada koneksi Socket.IO sebelum menambahkan yang baru
+    io.setMaxListeners(20);
 };
 
 // functions

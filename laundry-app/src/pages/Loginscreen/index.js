@@ -1,6 +1,8 @@
 import tw from 'twrnc';
 import React, { useEffect } from 'react';
-import {  Text, View, TouchableOpacity, BackHandler, Alert } from 'react-native';
+import {halamanDepan} from '../../assets/images';
+import {  Text, View, TouchableOpacity, BackHandler, Alert,Image, ImageBackground } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
 const Loginscreen
  = ({navigation}) => {
@@ -28,7 +30,6 @@ useEffect(() => {
 }, []);
 
 const navigateToHome = (user) => {
-  console.log(user);
     if (user == "admin") {
       navigation.navigate('Qrcodescreen');
     }else  if (user == "owner") {
@@ -39,23 +40,25 @@ const navigateToHome = (user) => {
   
 
   return (
-    <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
-      <View>
-          <View style={tw`rounded-lg p-5 shadow-md`}>
-            {/* Tombol-tombol aksi */}
-            <View style={tw`mb-5`}>
-              <TouchableOpacity style={tw`bg-blue-500 rounded p-2 flex-row items-center mb-5`} onPress={() => navigateToHome("admin")}>
-                <Text style={tw`text-white text-sm font-semibold mr-1`}>admin</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={tw`mt-5 bg-white`}>
-              <TouchableOpacity style={tw`bg-green-500 rounded p-2 flex-row items-center`} onPress={() => navigateToHome("owner")}>
-                <Text style={tw`text-white text-sm font-semibold mr-1`}>owner</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          {/* Tambahkan card pesanan lainnya di sini */}
+    <View style={tw`flex-1`}>
+      <ImageBackground source={halamanDepan} style={tw`w-100 h-100`}>
+
+      <View style={{  height:900,backgroundColor:"white",borderRadius:20,marginTop:380 }} >
+        <Text style={{marginTop:50,fontSize:20,fontWeight:200,marginStart:30,fontStyle:"italic" }}>Hallo, Siapa Anda??</Text>
+        <View style={{ marginTop:40,flexDirection:"row" }}>
+        <View>
+        <TouchableOpacity style={{ backgroundColor:"green",marginHorizontal:40,paddingHorizontal:20,paddingVertical:10,borderRadius:30}} onPress={() => navigateToHome("admin")}>
+                  <Text style={tw`text-white text-sm font-semibold italic`}><AntDesign name="user" size={20} color="black" />  Admin</Text>
+        </TouchableOpacity>
         </View>
+        <View>
+        <TouchableOpacity style={{ backgroundColor:"gray",marginHorizontal:20,paddingHorizontal:20,paddingVertical:10,borderRadius:30}} onPress={() => navigateToHome("owner")}>
+                  <Text style={tw`text-white text-sm font-semibold italic`}><AntDesign name="user" size={20} color="black" />  Owner</Text>
+        </TouchableOpacity>
+        </View>
+        </View>
+      </View>
+      </ImageBackground>
     </View>
   );
 };
