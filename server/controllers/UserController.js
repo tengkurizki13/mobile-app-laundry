@@ -115,44 +115,9 @@ Tim laundry citra jaya`;
   }
   }
 
-  // static async userAdd(req, res, next) {
-  //   try {
-  //     const {
-  //       username,
-  //       phoneNumber,
-  //     } = req.body;
-      
-
-  //     let newUser = await User.create({
-  //       username,
-  //       phoneNumber,
-  //     });
-
-  //     let option = {
-  //       attributes: {
-  //         exclude: ["password"],
-  //       },
-  //     };
-
-  //     let user = await User.findByPk(newUser.id,option);
-  
-  //     res.status(201).json(
-  //       {
-  //         message: "User has been created successfully",
-  //         data: user,
-  //       },
-  //     );
-  //   } catch (error) {
-  //     console.log(error);
-  //     next(error);
-  //   }
-  // }
-
   static async userDelete(req, res, next) {
     try {
       const { id } = req.params;
-
-      if (Number(id) === 1 || Number(id) === 2) throw { name: "forbidden" };
 
       let user = await User.findByPk(id);
 
@@ -176,7 +141,6 @@ Tim laundry citra jaya`;
       if (isConnected) {
       const { id } = req.params;
 
-      if (Number(id) === 1 || Number(id) === 2) throw { name: "forbidden" };
 
       const {
         username,
