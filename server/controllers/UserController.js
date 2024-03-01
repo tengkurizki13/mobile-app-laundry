@@ -3,15 +3,20 @@ const {isConnected,fileSock} = require("../wa_confic")
 const { format } = require("date-fns");
 const { Op } = require('sequelize');
 const { sequelize } = require('../models'); 
+const Redis = require("ioredis");
+const redis = new Redis({
+  host: 'localhost', 
+  port: 6379, 
+});
 
 class UserController {
   static async users(req, res, next) {
     try {
 
+      let response;
       let option = {
         order: [["id", "DESC"]],
         where: {
-          role : 'customer',
           username: {
             [Op.iLike]: `%${req.query.search}%`
           }
@@ -21,12 +26,26 @@ class UserController {
           },
       };
 
-      let users = await User.findAll(option);
+      if (req.query.search) {
+        console.log("masuk if search");
+        response = await User.findAll(option);
+      }else{
+        console.log("masuk tidak if search");
+        const userCache = await redis.get("app:users");
+        if (!userCache) {
+          let users = await User.findAll();
+          await redis.set("app:users", JSON.stringify(users));
+          response = users;
+        }else {
+          response = JSON.parse(userCache);
+        }
+      }
+
 
 
       res.status(200).json({
         message: "all users",
-        data: users,
+        data: response,
       });
     } catch (error) {
       console.log(error);
@@ -95,7 +114,7 @@ Tim laundry citra jaya`;
               // Commit transaksi jika semua operasi berhasil
               await transaction.commit();
 
-
+              await redis.del("app:users");
               res.status(201).json(
                 {
                   message: "User has been created successfully",
@@ -124,7 +143,8 @@ Tim laundry citra jaya`;
       if (!user) throw { name: "notFound" };
 
       await user.destroy({ where: { id } });
-
+      await redis.del("app:users");
+      await redis.del("app:requests");
       res.status(200).json(
         {
           massage: `user with id ${user.id} success to delete`,
@@ -185,7 +205,8 @@ if (exists?.jid || (exists && exists[0]?.jid)) {
 
         await transaction.commit();
 
-
+        await redis.del("app:users");
+        await redis.del("app:requests");
         res.status(200).json({
           massage: `user success to update`,
         });

@@ -27,6 +27,8 @@ io.on("connection", async (socket) => {
 });
 
 
+process.setMaxListeners(20);
+
 connectToWhatsApp()
 
 server.listen(port, () => {

@@ -34,7 +34,6 @@ const Homescreen = ({navigation}) => {
   useEffect(() => {
     const socket = io(BASE_URL);
     socket.on('log', (log) => {
-      console.log(log,"ini di home");
       if (log != "connected") {
         navigation.navigate("Qrcodescreen")
       }

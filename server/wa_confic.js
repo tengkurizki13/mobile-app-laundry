@@ -50,6 +50,7 @@ async function connectToWhatsApp() {
                 connectToWhatsApp();
             } else if (reason === DisconnectReason.connectionLost) {
                 console.log("Connection Lost from Server, reconnecting...");
+                updateQR("lost")
                 connectToWhatsApp();
             } else if (reason === DisconnectReason.connectionReplaced) {
                 console.log("Connection Replaced, Another New Session Opened, Please Close Current Session First");
@@ -154,6 +155,10 @@ const updateQR = (data) => {
         case "connected":
             soket?.emit("qrstatus", "../../assets/images.jpeg");
             soket?.emit("log", "connected");
+            break;
+        case "lost":
+            soket?.emit("qrstatus", "../../assets/images.jpeg");
+            soket?.emit("log", "lost");
             break;
         case "qrscanned":
             soket?.emit("qrstatus", "./assets/check.svg");

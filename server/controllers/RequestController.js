@@ -3,10 +3,17 @@ const { Op } = require('sequelize');
 const { format } = require("date-fns");
 const {isConnected,fileSock} = require("../wa_confic")
 const { sequelize } = require('../models'); 
+const Redis = require("ioredis");
+const redis = new Redis({
+  host: 'localhost', 
+  port: 6379, 
+});
 
 class RequestController {
   static async requests(req, res, next) {
     try {
+      let isFilter = true
+      let response;
       let option = {
         include: [
           {
@@ -23,12 +30,13 @@ class RequestController {
         option.where = {
           status: req.query.filter
         };
+        isFilter = false
       }
   
 
       if (req.query.search) {
         let idNum = Number(req.query.search)
-        console.log(idNum);
+        isFilter = false
         option.where = {
           id: {
             [Op.eq]: idNum
@@ -39,6 +47,7 @@ class RequestController {
   
      // Menambahkan filter waktu jika disediakan
 if (req.query.startDate && req.query.endDate) {
+  isFilter = false
   option.where = option.where || {}; // Pastikan option.where sudah didefinisikan
   option.where.createdAt = {
     [Op.between]: [
@@ -48,16 +57,27 @@ if (req.query.startDate && req.query.endDate) {
   };
 }
 
-  
-      let requests = await Request.findAll(option);
 
-  
+
+  if (isFilter) {
+    const requestCache = await redis.get("app:requests");
+    if (!requestCache) {
+      let requests = await Request.findAll();
+      await redis.set("app:requests", JSON.stringify(requests));
+      response = requests;
+    }else {
+      response = JSON.parse(requestCache);
+    }
+  }else {
+    response = await Request.findAll(option);
+  }
+
       res.status(200).json({
         message: "all request",
-        data: requests,
+        data: response,
       });
     } catch (error) {
-      console.error(error);
+      console.error(error,"masuk");
       next(error);
     }
   }
@@ -117,6 +137,7 @@ if (req.query.startDate && req.query.endDate) {
 
         await t.commit(); // Komit transaksi jika berhasil
 
+        await redis.del("app:requests");
         res.status(201).json({
             message: "Request has been created successfully",
             data: request,
@@ -137,7 +158,7 @@ if (req.query.startDate && req.query.endDate) {
       if (!request) throw { name: "notFound" };
 
       await request.destroy({ where: { id } });
-
+      await redis.del("app:requests");
       res.status(200).json(
         {
           massage: `request with id ${request.id} success to delete`,
@@ -174,6 +195,7 @@ if (req.query.startDate && req.query.endDate) {
         userId
       },option);
 
+      await redis.del("app:requests");
       res.status(200).json({
         massage: `request success to update`,
       });
@@ -243,6 +265,7 @@ Tim laundry citra jaya`;
               // Commit transaksi jika semua operasi berhasil
               await transaction.commit();
 
+              await redis.del("app:requests");
               res.status(200).json({
                   message: `request status successfully updated`,
               });
